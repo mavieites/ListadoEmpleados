@@ -1,6 +1,6 @@
-package com.qindel.empleados.Excel.Exportar;
+package com.qindel.empleados.excel.Exportar;
 
-import com.qindel.empleados.Entity.Empleado;
+import com.qindel.empleados.model.Empleado;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;

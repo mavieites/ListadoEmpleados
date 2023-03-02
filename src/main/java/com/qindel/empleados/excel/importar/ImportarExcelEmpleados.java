@@ -1,6 +1,7 @@
-package com.qindel.empleados.Excel.importar;
+package com.qindel.empleados.excel.importar;
 
-import com.qindel.empleados.Entity.Empleado;
+import com.qindel.empleados.model.Empleado;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -9,20 +10,23 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class ImportarExcelEmpleados {
 
     public List<Empleado> excelImport() throws IOException {
         List<Empleado> empleados = new ArrayList<>();
         long id = 0;
         long codigo = 0;
+        String nombre = "";
         String proyecto = "";
         String responsableProyecto = "";
         String area = "";
@@ -30,7 +34,7 @@ public class ImportarExcelEmpleados {
         String localizacion = "";
         Date fechaAsigDesde = null;
         Date fechaAsigHasta = null;
-        String asignacionProyecto = "";
+        long asignacionProyecto = 0;
         Date fechaInicioEmpresa = null;
         Date fechaComienzoProfesional = null;
         long experiencia = 0;
@@ -59,51 +63,55 @@ public class ImportarExcelEmpleados {
                         System.out.println(codigo);
                         break;
                     case 2:
+                        nombre = cell.getStringCellValue();
+                        System.out.println(nombre);
+                        break;
+                    case 3:
                         proyecto = cell.getStringCellValue();
                         System.out.println(proyecto);
                         break;
-                    case 3:
+                    case 4:
                         responsableProyecto = cell.getStringCellValue();
                         System.out.println(responsableProyecto);
                         break;
-                    case 4:
+                    case 5:
                         area = cell.getStringCellValue();
                         System.out.println(area);
                         break;
-                    case 5:
+                    case 6:
                         responsableArea = cell.getStringCellValue();
                         System.out.println(responsableArea);
                         break;
-                    case 6:
+                    case 7:
                         localizacion = cell.getStringCellValue();
                         System.out.println(localizacion);
                         break;
-                    case 7:
-                        fechaAsigDesde = cell.getDateCellValue();
-                        System.out.println(fechaAsigDesde.getTime());
-                        break;
                     case 8:
-                        fechaAsigHasta = cell.getDateCellValue();
-                        System.out.println(fechaAsigHasta.getTime());
+                        fechaAsigDesde = cell.getDateCellValue();
+                        System.out.println(fechaAsigDesde);
                         break;
                     case 9:
-                        asignacionProyecto = cell.getStringCellValue();
-                        System.out.println(asignacionProyecto);
+                        fechaAsigHasta = cell.getDateCellValue();
+                        System.out.println(fechaAsigHasta);
                         break;
                     case 10:
-                        fechaInicioEmpresa = cell.getDateCellValue();
-                        System.out.println(fechaInicioEmpresa.getTime());
+                        asignacionProyecto = (long) cell.getNumericCellValue();
+                        System.out.println(asignacionProyecto);
                         break;
                     case 11:
-                        fechaComienzoProfesional = cell.getDateCellValue();
-                        System.out.println(fechaComienzoProfesional.getTime());
+                        fechaInicioEmpresa = cell.getDateCellValue();
+                        System.out.println(fechaInicioEmpresa);
                         break;
                     case 12:
+                        fechaComienzoProfesional = cell.getDateCellValue();
+                        System.out.println(fechaComienzoProfesional);
+                        break;
+                    case 13:
                         experiencia = (long) cell.getNumericCellValue();
                         System.out.println(experiencia);
                         break;
                 }
-                empleados.add(new Empleado(id,codigo,proyecto,responsableProyecto,area,responsableArea, localizacion,
+                empleados.add(new Empleado(id,codigo,nombre,proyecto,responsableProyecto,area,responsableArea, localizacion,
                         fechaAsigDesde,fechaAsigHasta,asignacionProyecto,fechaInicioEmpresa,fechaComienzoProfesional,experiencia));
             }
 
@@ -113,6 +121,16 @@ public class ImportarExcelEmpleados {
         System.out.printf("Importacion hecha en %d ms\n",(end-start));
 
         return empleados;
+    }
+
+    private Date CastToDate(String stringCellValue) {
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            return formato.parse(stringCellValue);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
