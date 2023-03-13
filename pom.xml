@@ -11,6 +11,7 @@
 	<groupId>com.qindel.empleados</groupId>
 	<artifactId>listadoEmpleados</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>listadoclientes</name>
 	<description>Listado de empleados</description>
 	<properties>
